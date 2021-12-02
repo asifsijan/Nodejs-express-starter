@@ -1,1 +1,5 @@
-GET http://localhost:5000/api/users
+
+
+GET http://localhost:5000/api/auth/welcome
+Authorization: x-access-token
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjFhNzkxZGQ2ZjJiOWI5ODE2NTNmZWVlIiwiZW1haWwiOiJnYWpvbkBnbWFpbC5jb20iLCJpYXQiOjE2Mzg0NjIyMTAsImV4cCI6MTYzODQ2OTQxMH0.GSgPH9O0Z6SYhHAfHyBTajHXYUU4eRAAA8ksKmJFs5o

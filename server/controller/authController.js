@@ -1,7 +1,7 @@
 require("dotenv").config();
 const User = require("../models/User");
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const postUser = async (req, res) => {
     const newUser = new User(req.body);
@@ -13,9 +13,6 @@ const postUser = async (req, res) => {
     }
 };
 
-const login = async (req, res) => {
-    
-}
 
 const register = async (req, res) => {
 
@@ -28,7 +25,7 @@ const register = async (req, res) => {
         res.status(400).send("All input is required");
       }
   
-      // check if user already exist
+      
       // Validate if user exist in our database
       const oldUser = await User.findOne({ email });
   
@@ -63,8 +60,45 @@ const register = async (req, res) => {
     } catch (err) {
       console.log(err);
     }
-    // Our register logic ends here
+    //register logic ends here
   };
+
+
+  const login = async (req, res) => {
+      // Our login logic starts here
+  try {
+    // Get user input
+    const { email, pass } = req.body;
+
+    // Validate user input
+    if (!(email && pass)) {
+      res.status(400).send("All input is required");
+    }
+    // Validate if user exist in our database
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(pass, user.pass))) {
+      // Create token
+      const token = jwt.sign(
+        { user_id: user._id, email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
+        }
+      );
+
+      // save user token
+      user.token = token;
+
+      // user
+      res.status(200).json(user);
+    }
+    res.status(400).send("Invalid Credentials");
+  } catch (err) {
+    console.log(err);
+  }
+    
+  }
 
 
 module.exports = {
